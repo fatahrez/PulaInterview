@@ -1,4 +1,4 @@
-package com.fatahapps.data.remote.dto
+package com.fatahapps.data.remote.dto.survey
 
 import com.google.gson.annotations.SerializedName
 
