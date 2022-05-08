@@ -2,7 +2,6 @@ package com.fatahapps.data.local.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.fatahapps.domain.entities.survey.OptionEntity
 
 @Entity
 data class QuestionLocal (
