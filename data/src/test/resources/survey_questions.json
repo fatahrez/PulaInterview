@@ -1,0 +1,53 @@
+{
+  "id": "farmer_survey",
+  "start_question_id": "q_farmer_name",
+  "questions": [
+    {
+      "id": "q_farmer_name",
+      "question_type": "FREE_TEXT",
+      "answer_type": "SINGLE_LINE_TEXT",
+      "question_text": "q_farmer_name",
+      "options": [],
+      "next": "q_farmer_gender"
+    },
+    {
+      "id": "q_farmer_gender",
+      "question_type": "SELECT_ONE",
+      "answer_type": "SINGLE_LINE_TEXT",
+      "question_text": "q_farmer_gender",
+      "options": [
+        {
+          "value": "MALE",
+          "display_text": "opt_male"
+        },
+        {
+          "value": "FEMALE",
+          "display_text": "opt_female"
+        },
+        {
+          "value": "OTHER",
+          "display_text": "opt_other"
+        }
+      ],
+      "next": "q_size_of_farm"
+    },
+    {
+      "id": "q_size_of_farm",
+      "question_type": "TYPE_VALUE",
+      "answer_type": "FLOAT",
+      "question_text": "q_size_of_farm",
+      "options": [],
+      "next": null
+    }
+  ],
+  "strings": {
+    "en": {
+      "q_farmer_name": "What is the name of the farmer?",
+      "q_farmer_gender": "What is the gender of the farmer?",
+      "opt_male": "Male",
+      "opt_female": "Female",
+      "opt_other": "Other",
+      "q_size_of_farm": "What is the size of the farm in hectares?"
+    }
+  }
+}
