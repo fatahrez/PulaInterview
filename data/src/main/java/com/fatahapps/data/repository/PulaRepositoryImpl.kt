@@ -3,7 +3,7 @@ package com.fatahapps.data.repository
 import com.fatahapps.data.mapper.toDomain
 import com.fatahapps.data.remote.PulaApi
 import com.fatahapps.domain.entities.Resource
-import com.fatahapps.domain.entities.survey.Question
+import com.fatahapps.domain.entities.survey.QuestionEntity
 import com.fatahapps.domain.repository.PulaRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class PulaRepositoryImpl @Inject constructor(
     private val api: PulaApi
 ): PulaRepository {
-    override fun getQuestions(): Flow<Resource<List<Question>>> = flow {
+    override fun getQuestions(): Flow<Resource<List<QuestionEntity>>> = flow {
         emit(Resource.Loading())
 
         try {

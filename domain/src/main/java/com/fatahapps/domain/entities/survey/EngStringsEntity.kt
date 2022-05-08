@@ -1,6 +1,6 @@
 package com.fatahapps.domain.entities.survey
 
-data class EngStrings(
+data class EngStringsEntity(
     val qFarmerName: String,
     val qFarmerGender: String,
     val optMale: String,

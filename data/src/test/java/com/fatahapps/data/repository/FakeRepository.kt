@@ -1,14 +1,13 @@
 package com.fatahapps.data.repository
 
 import com.fatahapps.domain.entities.Resource
-import com.fatahapps.domain.entities.survey.Question
+import com.fatahapps.domain.entities.survey.QuestionEntity
 import com.fatahapps.domain.repository.PulaRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 
 class FakeRepository: PulaRepository {
-    private val questions = mutableListOf<Question>()
+    private val questions = mutableListOf<QuestionEntity>()
 
     private var shouldReturnNetworkError = false
 
@@ -16,7 +15,7 @@ class FakeRepository: PulaRepository {
         shouldReturnNetworkError = value
     }
 
-    override fun getQuestions(): Flow<Resource<List<Question>>> = flow {
+    override fun getQuestions(): Flow<Resource<List<QuestionEntity>>> = flow {
 
         if (shouldReturnNetworkError){
             flow{ emit(Resource.Error("Error", null)) }

@@ -1,6 +1,6 @@
 package com.fatahapps.data.remote.dto.survey
 
-import com.fatahapps.domain.entities.survey.Option
+import com.fatahapps.domain.entities.survey.OptionEntity
 import com.google.gson.annotations.SerializedName
 
 data class QuestionDTO(
@@ -13,7 +13,7 @@ data class QuestionDTO(
     @SerializedName("question_text")
     val questionText: String,
     @SerializedName("options")
-    val options: List<Option>,
+    val optionEntities: List<OptionEntity>,
     @SerializedName("next")
     val next: String?
 )
