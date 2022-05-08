@@ -5,6 +5,6 @@ data class Question(
     val questionType: String,
     val answerType: String,
     val questionText: String,
-    val option: List<Option>,
+    val options: List<Option>,
     val next: String?
 )
