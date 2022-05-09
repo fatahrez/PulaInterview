@@ -1,6 +1,6 @@
 package com.fatahapps.domain.entities.survey
 
-data class Option(
+data class OptionEntity(
     val value: String,
     val displayText: String
 )

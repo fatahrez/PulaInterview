@@ -1,7 +1,7 @@
 package com.fatahapps.domain.usecases
 
 import com.fatahapps.domain.entities.Resource
-import com.fatahapps.domain.entities.survey.Question
+import com.fatahapps.domain.entities.survey.QuestionEntity
 import com.fatahapps.domain.repository.PulaRepository
 import io.mockk.mockk
 import kotlinx.coroutines.flow.*
@@ -11,14 +11,14 @@ import org.junit.Test
 class GetQuestionsUseCaseTest {
 
     companion object {
-        fun mockRepository(flowReturn: Flow<Resource<List<Question>>>) = object : PulaRepository {
-            override fun getQuestions(): Flow<Resource<List<Question>>> = flowReturn
+        fun mockRepository(flowReturn: Flow<Resource<List<QuestionEntity>>>) = object : PulaRepository {
+            override fun getQuestions(): Flow<Resource<List<QuestionEntity>>> = flowReturn
         }
     }
 
     @Test
     fun `Get questions starts with loading RETURNS Resource Loading`() = runBlocking {
-        val question = mockk<Question>()
+        val question = mockk<QuestionEntity>()
 
         val repository = mockRepository(flow {
             emit(Resource.Loading())
@@ -41,7 +41,7 @@ class GetQuestionsUseCaseTest {
 
     @Test
     fun `get questions success result RETURNS Resource + Data`() = runBlocking {
-        val question = mockk<Question>()
+        val question = mockk<QuestionEntity>()
 
         val repository = mockRepository(flow {
             emit(Resource.Loading())
