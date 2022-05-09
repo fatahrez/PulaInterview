@@ -16,7 +16,6 @@ class PulaRepositoryImpl @Inject constructor(
 ): PulaRepository {
     override fun getQuestions(): Flow<Resource<List<QuestionEntity>>> = flow {
         emit(Resource.Loading())
-
         try {
             val remoteData = api.getQuestions()
             emit(Resource.Success(remoteData
