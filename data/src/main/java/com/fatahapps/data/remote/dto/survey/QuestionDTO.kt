@@ -13,7 +13,7 @@ data class QuestionDTO(
     @SerializedName("question_text")
     val questionText: String,
     @SerializedName("options")
-    val optionEntities: List<OptionEntity>,
+    val optionDTOs: List<OptionDTO>,
     @SerializedName("next")
     val next: String?
 )

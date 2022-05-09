@@ -9,6 +9,6 @@ data class QuestionLocal (
     val questionType: String,
     val answerType: String,
     val questionText: String,
-    val optionEntities: List<OptionLocal>,
+    val optionLocals: List<OptionLocal>,
     val next: String?
 )
