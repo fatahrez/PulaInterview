@@ -10,11 +10,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.fatahapps.presentation.model.survey.Question
+import com.fatahapps.presentation.viewmodel.questions.GetQuestionsViewModel
 import com.fatahapps.pulatest.ui.theme.PulaTestTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
             PulaTestTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,6 +29,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val viewModel: GetQuestionsViewModel = hiltViewModel()
+                    val state = viewModel.state.value
+                    QuestionsResponse(state.questions)
                     Greeting("Android")
                 }
             }
@@ -32,6 +42,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
+}
+
+@Composable
+fun QuestionsResponse(questions: List<Question>) {
+    Text(text = questions.toString())
 }
 
 @Preview(showBackground = true)
