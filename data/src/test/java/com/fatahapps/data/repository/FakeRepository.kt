@@ -23,5 +23,4 @@ class FakeRepository: PulaRepository {
             flow { emit(Resource.Success(questions)) }
         }
     }
-
 }

@@ -11,4 +11,5 @@ import com.fatahapps.data.local.model.QuestionLocal
 )
 @TypeConverters(Converters::class)
 abstract class PulaDatabase: RoomDatabase() {
+    abstract val questionDao: QuestionDao
 }
