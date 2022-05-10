@@ -1,4 +1,4 @@
-package com.fatahapps.data.di
+package com.fatahapps.pulatest.di
 
 import android.app.Application
 import androidx.room.Room
@@ -8,7 +8,10 @@ import com.fatahapps.data.local.util.GsonParser
 import com.fatahapps.data.remote.HttpClient
 import com.fatahapps.data.remote.HttpLogger
 import com.fatahapps.data.remote.PulaApi
+import com.fatahapps.data.repository.PulaRepositoryImpl
+import com.fatahapps.domain.repository.PulaRepository
 import com.google.gson.Gson
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,9 +22,19 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module()
+@Module(includes = [AppModule.Binders::class])
 @InstallIn(SingletonComponent::class)
-class DataModule {
+class AppModule {
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    interface Binders{
+        @Binds
+        fun bindsRepository(
+            pulaRepositoryImpl: PulaRepositoryImpl
+        ): PulaRepository
+    }
+
     @Provides
     fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLogger.create()
@@ -55,6 +68,8 @@ class DataModule {
             .fallbackToDestructiveMigration()
             .build()
     }
+
+
 
     @Provides
     @Singleton

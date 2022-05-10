@@ -7,7 +7,8 @@ import com.fatahapps.data.local.model.QuestionLocal
 
 @Database(
     entities = [QuestionLocal::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class PulaDatabase: RoomDatabase() {
