@@ -50,7 +50,7 @@ class GetQuestionsUseCaseTest {
 
         val result = GetQuestionsUseCase(repository).invoke().last()
 
-        assert(result is Resource.Success && result.data?.size ?: false == 3 )
+        assert(result is Resource.Success && (result.data?.size ?: false) == 3)
     }
 
     @Test

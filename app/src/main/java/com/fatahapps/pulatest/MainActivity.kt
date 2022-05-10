@@ -32,16 +32,10 @@ class MainActivity : ComponentActivity() {
                     val viewModel: GetQuestionsViewModel = hiltViewModel()
                     val state = viewModel.state.value
                     QuestionsResponse(state.questions)
-                    Greeting("Android")
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
 }
 
 @Composable
@@ -53,6 +47,6 @@ fun QuestionsResponse(questions: List<Question>) {
 @Composable
 fun DefaultPreview() {
     PulaTestTheme {
-        Greeting("Android")
+
     }
 }
