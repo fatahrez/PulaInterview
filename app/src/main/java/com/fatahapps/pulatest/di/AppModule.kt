@@ -8,7 +8,9 @@ import com.fatahapps.data.local.util.GsonParser
 import com.fatahapps.data.remote.HttpClient
 import com.fatahapps.data.remote.HttpLogger
 import com.fatahapps.data.remote.PulaApi
+import com.fatahapps.data.repository.EngStringRepositoryImpl
 import com.fatahapps.data.repository.PulaRepositoryImpl
+import com.fatahapps.domain.repository.EngStringRepository
 import com.fatahapps.domain.repository.PulaRepository
 import com.google.gson.Gson
 import dagger.Binds
@@ -33,6 +35,11 @@ class AppModule {
         fun bindsRepository(
             pulaRepositoryImpl: PulaRepositoryImpl
         ): PulaRepository
+
+        @Binds
+        fun bindsEngStringsRepository(
+            engStringRepositoryImpl: EngStringRepositoryImpl
+        ): EngStringRepository
     }
 
     @Provides
@@ -76,5 +83,11 @@ class AppModule {
     fun providesQuestionDao(
         pulaDatabase: PulaDatabase
     ) = pulaDatabase.questionDao
+
+    @Provides
+    @Singleton
+    fun providesEngStringsDao(
+        pulaDatabase: PulaDatabase
+    ) = pulaDatabase.engStringsDao
 
 }

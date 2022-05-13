@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.fatahapps.presentation.model.survey.Question
+import com.fatahapps.presentation.viewmodel.engstrings.EngStringsViewModel
 import com.fatahapps.presentation.viewmodel.questions.GetQuestionsState
 import com.fatahapps.presentation.viewmodel.questions.GetQuestionsViewModel
 import com.fatahapps.presentation.viewmodel.questions.QuestionEvent
@@ -33,9 +34,9 @@ fun QuestionsPage(
     navigator: DestinationsNavigator
 ) {
     val viewModel: GetQuestionsViewModel = hiltViewModel()
+
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest {
@@ -54,7 +55,7 @@ fun QuestionsPage(
         scaffoldState = scaffoldState
     ) {
         if (!state.isLoading) {
-            Log.d("Questions", "QuestionsPage: ${viewModel.questionList.value}")
+            Log.d("En Strings", "QuestionsPage: ${viewModel.stringState.value.engStrings}")
             QuestionScreenSection(viewModel= viewModel)
         }
     }
