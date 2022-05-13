@@ -94,7 +94,7 @@ fun OnboardingPage(
                 Spacer(modifier = Modifier.size(24.dp))
                 Button(
                     onClick = {
-                              navigator.navigate(QuestionsPageDestination("Question"))
+                              navigator.navigate(QuestionsPageDestination)
                     },
                     modifier = Modifier
                         .fillMaxWidth()

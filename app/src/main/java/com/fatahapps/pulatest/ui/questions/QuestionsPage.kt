@@ -30,8 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Destination
 @Composable
 fun QuestionsPage(
-    navigator: DestinationsNavigator,
-    surveyString: String
+    navigator: DestinationsNavigator
 ) {
     val viewModel: GetQuestionsViewModel = hiltViewModel()
     val state = viewModel.state.value
@@ -39,7 +38,6 @@ fun QuestionsPage(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
-        viewModel.setTitle(surveyString)
         viewModel.eventFlow.collectLatest {
             when(it) {
                 is GetQuestionsViewModel.UIEvent.ShowSnackbar -> {

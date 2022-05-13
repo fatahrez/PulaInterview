@@ -52,10 +52,6 @@ class GetQuestionsViewModel @Inject constructor(
 
     var currentQuestion = 0
 
-    fun setTitle(title: String) {
-        _title.value = title
-    }
-
     init {
         viewModelScope.launch {
             onEvent(QuestionEvent.GetQuestions)
