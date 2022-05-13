@@ -1,20 +1,15 @@
 package com.fatahapps.pulatest
 
-import android.content.Context
+
+import android.net.Uri
+import android.provider.Settings.Global.getString
 import android.util.Log
-import androidx.compose.foundation.clickable
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.listSaver
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,16 +19,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.fatahapps.presentation.model.survey.Question
-import com.fatahapps.presentation.viewmodel.engstrings.EngStringsViewModel
-import com.fatahapps.presentation.viewmodel.questions.GetQuestionsState
 import com.fatahapps.presentation.viewmodel.questions.GetQuestionsViewModel
 import com.fatahapps.presentation.viewmodel.questions.QuestionEvent
-import com.google.gson.Gson
+import com.fatahapps.pulatest.destinations.CameraPageDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collectLatest
-import org.json.JSONObject
+import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
+private lateinit var outputDirectory: File
+private lateinit var cameraExecutor: ExecutorService
 
 @Destination
 @Composable
@@ -42,9 +39,33 @@ fun QuestionsPage(
 ) {
     val viewModel: GetQuestionsViewModel = hiltViewModel()
 
+    var shouldShowCamera: MutableState<Boolean> = remember {
+        mutableStateOf(false)
+    }
+    lateinit var photoUri: Uri
+    var shouldShowPhoto: MutableState<Boolean> = remember {
+        mutableStateOf(false)
+    }
+
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     var question: String
+
+    fun handleImageCapture(uri: Uri) {
+        Log.i("kilo", "Image captured: $uri")
+        shouldShowCamera.value = false
+
+        photoUri = uri
+        shouldShowPhoto.value = true
+    }
+
+    fun getOutputDirectory(): File {
+        val mediaDir = MainActivity().externalMediaDirs.firstOrNull()?.let {
+            File(it, "PulaTest").apply { mkdirs() }
+        }
+
+        return if (mediaDir != null && mediaDir.exists()) mediaDir else MainActivity().filesDir
+    }
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest {
@@ -64,14 +85,33 @@ fun QuestionsPage(
     ) {
         if (!state.isLoading) {
             Log.d("En Strings", "QuestionsPage: ${viewModel.stringState.value.engStrings}")
-            QuestionScreenSection(viewModel= viewModel)
+            QuestionScreenSection(viewModel= viewModel,
+                shouldShowCamera.value,
+                navigator = navigator,
+                handleCamera = ::handleImageCapture
+            )
         }
     }
+
+    outputDirectory = getOutputDirectory()
+    cameraExecutor = Executors.newSingleThreadExecutor()
+
+    BackHandler(true) {
+        
+    }
+
+    fun onDestroy() {
+        cameraExecutor.shutdown()
+    }
+
 }
 
 @Composable
 fun QuestionScreenSection(
-    viewModel: GetQuestionsViewModel
+    viewModel: GetQuestionsViewModel,
+    shouldShowCamera: Boolean,
+    navigator: DestinationsNavigator,
+    handleCamera: (Uri) -> Unit
 ) {
     Column(
         Modifier
@@ -155,7 +195,7 @@ fun QuestionScreenSection(
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
         }
-        
+
         Button(onClick = {
             if (viewModel.currentQuestion + 1 != viewModel.questionCount.value) {
 //                if (viewModel.questionIsSelected.value) {
@@ -166,8 +206,17 @@ fun QuestionScreenSection(
 //                    viewModel.questionNotSelected()
 //                }
             } else {
-                Log.d("Question size", "QuestionScreenSection: ${viewModel.currentQuestion}, size: ${viewModel.questionList.value.size}")
                 viewModel.onEvent(QuestionEvent.NavigateToAfterQuestion)
+                if (shouldShowCamera) {
+                    navigator.navigate(
+                        CameraPageDestination(
+                            outputDirectory = outputDirectory,
+//                            cameraExecutor,
+//                          ::handleImageCapture,
+//                            onError = { Log.e("TAG", "QuestionScreenSection: ")}
+                        )
+                    )
+                }
             }
         }) {
             Text(

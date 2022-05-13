@@ -1,6 +1,8 @@
 package com.fatahapps.pulatest.ui.auth
 
+import android.view.GestureDetector
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -101,7 +103,6 @@ fun LoginPage(
         ) {
             Text(text = "Login")
         }
-
     }
 
 }
