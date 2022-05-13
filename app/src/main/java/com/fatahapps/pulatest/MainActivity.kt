@@ -11,9 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraph
 import com.fatahapps.presentation.model.survey.Question
 import com.fatahapps.presentation.viewmodel.questions.GetQuestionsViewModel
 import com.fatahapps.pulatest.ui.theme.PulaTestTheme
+import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.spec.NavGraphSpec
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,18 +32,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val viewModel: GetQuestionsViewModel = hiltViewModel()
-                    val state = viewModel.state.value
-                    QuestionsResponse(state.questions)
+                    DestinationsNavHost(navGraph = NavGraphs.root)
+//                    OnboardingPage()
                 }
             }
         }
     }
-}
-
-@Composable
-fun QuestionsResponse(questions: List<Question>) {
-    Text(text = questions.toString())
 }
 
 @Preview(showBackground = true)
