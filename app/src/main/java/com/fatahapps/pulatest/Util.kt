@@ -12,3 +12,6 @@ fun Path.standardQuadFromTo(from: Offset, to: Offset) {
         abs(from.y + to.y) / 2
     )
 }
+
+fun String.joinStringsLowerCase() =
+    split('_').joinToString("", transform = String::lowercase)

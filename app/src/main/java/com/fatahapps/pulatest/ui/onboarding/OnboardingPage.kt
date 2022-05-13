@@ -19,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fatahapps.pulatest.destinations.LoginPageDestination
 import com.fatahapps.pulatest.destinations.QuestionsPageDestination
 import com.fatahapps.pulatest.ui.theme.*
 import com.ramcosta.composedestinations.annotation.Destination
@@ -94,7 +95,7 @@ fun OnboardingPage(
                 Spacer(modifier = Modifier.size(24.dp))
                 Button(
                     onClick = {
-                              navigator.navigate(QuestionsPageDestination)
+                              navigator.navigate(LoginPageDestination)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
