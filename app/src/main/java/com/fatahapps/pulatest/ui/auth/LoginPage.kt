@@ -1,5 +1,9 @@
 package com.fatahapps.pulatest.ui.auth
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.view.GestureDetector
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -20,10 +24,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.preference.PreferenceManager
+import com.fatahapps.pulatest.ApplicationPrefs
+import com.fatahapps.pulatest.MainActivity
 import com.fatahapps.pulatest.destinations.QuestionsPageDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+private lateinit var prefManager: ApplicationPrefs
 
 @Destination
 @Composable
@@ -36,6 +45,9 @@ fun LoginPage(
             .padding(16.dp)
     ){
         val context = LocalContext.current
+        val activity = LocalContext.current as MainActivity
+        prefManager = ApplicationPrefs()
+        Log.i("TAG", "FirstTime: ${PreferenceManager.getDefaultSharedPreferences(context).getBoolean("wasAppStartedPreviously", false)}")
 
         var phone by remember { mutableStateOf(TextFieldValue("")) }
         TextField(
@@ -92,6 +104,12 @@ fun LoginPage(
                 } else if (phone.text.length != 13) {
                     Toast.makeText(context, "Phone Number should be 12 digits", Toast.LENGTH_LONG)
                         .show()
+                } else if(!prefManager.isNotFirstTime() && password == "1234GYD%$"){
+                    val recipient = "tech@pula.io"
+                    val subject = "New User login"
+                    val message = "User ${phone.text} has logged in for the first time"
+                    sendEmail(recipient, subject, message, activity, context)
+                    navigator.navigate(QuestionsPageDestination)
                 } else if (password == "1234GYD%$") {
                     navigator.navigate(QuestionsPageDestination)
                 } else {
@@ -103,6 +121,42 @@ fun LoginPage(
         ) {
             Text(text = "Login")
         }
+    }
+
+}
+
+private fun sendEmail(
+    recipient: String,
+    subject: String,
+    message: String,
+    activity: MainActivity,
+    context: Context
+) {
+    prefManager.setNotFirstTime(true)
+    /*ACTION_SEND action to launch an email client installed on your Android device.*/
+    val mIntent = Intent(Intent.ACTION_SEND)
+    /*To send an email you need to specify mailto: as URI using setData() method
+    and data type will be to text/plain using setType() method*/
+    mIntent.data = Uri.parse("mailto:")
+    mIntent.type = "text/plain"
+    // put recipient email in intent
+    /* recipient is put as array because you may wanna send email to multiple emails
+       so enter comma(,) separated emails, it will be stored in array*/
+    mIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
+    //put the Subject in the intent
+    mIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
+    //put the message in the intent
+    mIntent.putExtra(Intent.EXTRA_TEXT, message)
+
+
+    try {
+        //start email intent
+        activity.startActivity(Intent.createChooser(mIntent, "Choose Email Client..."))
+    }
+    catch (e: Exception){
+        //if any thing goes wrong for example no email client application or any exception
+        //get and show exception message
+        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
     }
 
 }
