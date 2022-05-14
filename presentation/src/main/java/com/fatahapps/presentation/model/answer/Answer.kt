@@ -8,5 +8,6 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class Answer(
-    val bitmap: String?
+    val bitmap: String?,
+    val answerList: List<String>
 ): Parcelable
