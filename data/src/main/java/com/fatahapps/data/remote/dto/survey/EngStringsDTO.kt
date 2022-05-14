@@ -13,6 +13,6 @@ data class EngStringsDTO(
     val optFemale: String,
     @SerializedName("opt_other")
     val optOther: String,
-    @SerializedName("q_size_of_farmer")
+    @SerializedName("q_size_of_farm")
     val qSizeOfFarm: String
 )
