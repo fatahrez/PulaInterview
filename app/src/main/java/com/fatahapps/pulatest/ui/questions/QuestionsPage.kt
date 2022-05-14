@@ -1,10 +1,10 @@
 package com.fatahapps.pulatest
 
 
-import android.net.Uri
-import android.provider.Settings.Global.getString
+import android.app.Activity
 import android.util.Log
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -19,18 +20,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
+import com.fatahapps.presentation.model.answer.Answer
 import com.fatahapps.presentation.viewmodel.questions.GetQuestionsViewModel
 import com.fatahapps.presentation.viewmodel.questions.QuestionEvent
 import com.fatahapps.pulatest.destinations.CameraPageDestination
+import com.fatahapps.pulatest.ui.camera.CameraPage
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import java.io.File
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-
-private lateinit var outputDirectory: File
-private lateinit var cameraExecutor: ExecutorService
+import kotlinx.coroutines.launch
 
 @Destination
 @Composable
@@ -39,33 +39,11 @@ fun QuestionsPage(
 ) {
     val viewModel: GetQuestionsViewModel = hiltViewModel()
 
-    var shouldShowCamera: MutableState<Boolean> = remember {
-        mutableStateOf(false)
-    }
-    lateinit var photoUri: Uri
-    var shouldShowPhoto: MutableState<Boolean> = remember {
-        mutableStateOf(false)
-    }
-
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     var question: String
 
-    fun handleImageCapture(uri: Uri) {
-        Log.i("kilo", "Image captured: $uri")
-        shouldShowCamera.value = false
-
-        photoUri = uri
-        shouldShowPhoto.value = true
-    }
-
-    fun getOutputDirectory(): File {
-        val mediaDir = MainActivity().externalMediaDirs.firstOrNull()?.let {
-            File(it, "PulaTest").apply { mkdirs() }
-        }
-
-        return if (mediaDir != null && mediaDir.exists()) mediaDir else MainActivity().filesDir
-    }
+    val activity = LocalContext.current as MainActivity
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest {
@@ -85,39 +63,27 @@ fun QuestionsPage(
     ) {
         if (!state.isLoading) {
             Log.d("En Strings", "QuestionsPage: ${viewModel.stringState.value.engStrings}")
-            QuestionScreenSection(viewModel= viewModel,
-                shouldShowCamera.value,
-                navigator = navigator,
-                handleCamera = ::handleImageCapture
-            )
+            QuestionScreenSection(viewModel= viewModel, activity, navigator = navigator)
         }
     }
-
-    outputDirectory = getOutputDirectory()
-    cameraExecutor = Executors.newSingleThreadExecutor()
 
     BackHandler(true) {
         
     }
-
-    fun onDestroy() {
-        cameraExecutor.shutdown()
-    }
-
 }
 
 @Composable
 fun QuestionScreenSection(
     viewModel: GetQuestionsViewModel,
-    shouldShowCamera: Boolean,
-    navigator: DestinationsNavigator,
-    handleCamera: (Uri) -> Unit
+    activity: MainActivity,
+    navigator: DestinationsNavigator
 ) {
     Column(
         Modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
+        val coroutineScope = rememberCoroutineScope()
         Text(
             text = "${viewModel.currentQuestion + 1} of ${viewModel.questionCount.value}",
             modifier = Modifier.fillMaxWidth(),
@@ -206,17 +172,8 @@ fun QuestionScreenSection(
 //                    viewModel.questionNotSelected()
 //                }
             } else {
+                activity.openCamera()
                 viewModel.onEvent(QuestionEvent.NavigateToAfterQuestion)
-                if (shouldShowCamera) {
-                    navigator.navigate(
-                        CameraPageDestination(
-                            outputDirectory = outputDirectory,
-//                            cameraExecutor,
-//                          ::handleImageCapture,
-//                            onError = { Log.e("TAG", "QuestionScreenSection: ")}
-                        )
-                    )
-                }
             }
         }) {
             Text(
