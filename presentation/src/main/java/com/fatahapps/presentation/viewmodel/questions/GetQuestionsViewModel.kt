@@ -1,5 +1,6 @@
 package com.fatahapps.presentation.viewmodel.questions
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,22 +8,24 @@ import androidx.lifecycle.viewModelScope
 import com.fatahapps.domain.entities.Resource
 import com.fatahapps.domain.usecases.GetQuestionsUseCase
 import com.fatahapps.domain.usecases.GetStringsUseCase
+import com.fatahapps.domain.usecases.PostAnswersUseCase
+import com.fatahapps.presentation.mapper.toDomain
 import com.fatahapps.presentation.mapper.toPresentation
+import com.fatahapps.presentation.model.answer.Answer
 import com.fatahapps.presentation.model.survey.Question
 import com.fatahapps.presentation.viewmodel.engstrings.EngStringsState
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GetQuestionsViewModel @Inject constructor(
     private val getQuestionsUseCase: GetQuestionsUseCase,
-    private val getStringsUseCase: GetStringsUseCase
+    private val getStringsUseCase: GetStringsUseCase,
+    private val postAnswersUseCase: PostAnswersUseCase
 ): ViewModel(){
 
     private val _state = mutableStateOf(GetQuestionsState())
@@ -36,6 +39,9 @@ class GetQuestionsViewModel @Inject constructor(
 
     private val _questionCount = mutableStateOf(value = 0)
     val questionCount: State<Int> = _questionCount
+
+    val _answer = mutableStateOf<Answer>(Answer("", listOf("")))
+    private val answer: State<Answer> = _answer
 
     private val _stringState = mutableStateOf(EngStringsState())
     val stringState: State<EngStringsState> = _stringState
@@ -155,7 +161,11 @@ class GetQuestionsViewModel @Inject constructor(
             }
             is QuestionEvent.NavigateToAfterQuestion -> {
                 viewModelScope.launch {
+                    postAnswersUseCase(answer.value.toDomain()).catch { e ->
+                        Log.e("TAG", "postAnswer: ", e)
+                    }.collect{
 
+                    }
                 }
             }
         }

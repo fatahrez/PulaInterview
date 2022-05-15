@@ -9,5 +9,5 @@ import kotlinx.coroutines.flow.Flow
 interface PulaRepository {
     fun getQuestions(): Flow<Resource<List<QuestionEntity>>>
 
-    fun postAnswers(answerEntity: AnswerEntity)
+    fun postAnswers(answerEntity: AnswerEntity): Flow<Resource<String>>
 }

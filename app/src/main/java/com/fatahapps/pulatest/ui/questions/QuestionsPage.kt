@@ -10,6 +10,9 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -41,7 +44,7 @@ fun QuestionsPage(
 
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
-    var question: String
+
 
     val activity = LocalContext.current as MainActivity
 
@@ -78,6 +81,15 @@ fun QuestionScreenSection(
     activity: MainActivity,
     navigator: DestinationsNavigator
 ) {
+    val stringAns = remember {
+        mutableStateOf("")
+    }
+    val optionAns = remember {
+        mutableStateOf("")
+    }
+    val floatAns = remember {
+        mutableStateOf("")
+    }
     Column(
         Modifier
             .fillMaxSize()
@@ -129,13 +141,13 @@ fun QuestionScreenSection(
                             },
                             modifier = Modifier.padding(all = Dp(value = 8F))
                         )
-
                         Text(
                             text = text.value,
                             modifier = Modifier.padding(start = 16.dp)
                         )
                     }
                 }
+                optionAns.value = selectedOption.value
             }
         }
 
@@ -147,6 +159,7 @@ fun QuestionScreenSection(
                     text = it
                 }
             )
+            stringAns.value = text.text
         }
 
         if (question.answerType.joinStringsLowerCase() == "float"){
@@ -160,6 +173,7 @@ fun QuestionScreenSection(
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
+            floatAns.value = text.text
         }
 
         Button(onClick = {
@@ -173,6 +187,8 @@ fun QuestionScreenSection(
 //                }
             } else {
                 activity.openCamera()
+                val answer = Answer("ddf", listOf(stringAns.value, optionAns.value, floatAns.value))
+                viewModel._answer.value = answer
                 viewModel.onEvent(QuestionEvent.NavigateToAfterQuestion)
             }
         }) {
@@ -180,5 +196,25 @@ fun QuestionScreenSection(
                 text = viewModel.buttonText.value
             )
         }
+    }
+}
+
+@Composable
+fun <T: Any> rememberMutableStateListOf(vararg elements: T): SnapshotStateList<T> {
+    return rememberSaveable(
+        saver = listSaver(
+            save = { stateList ->
+                if (stateList.isNotEmpty()) {
+                    val first = stateList.first()
+                    if (!canBeSaved(first)) {
+                        throw IllegalStateException("${first::class} cannot be saved. By default only types which can be stored in the Bundle class can be saved.")
+                    }
+                }
+                stateList.toList()
+            },
+            restore = { it.toMutableStateList() }
+        )
+    ) {
+        elements.toList().toMutableStateList()
     }
 }

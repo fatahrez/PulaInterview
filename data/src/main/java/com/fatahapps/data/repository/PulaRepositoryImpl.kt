@@ -2,14 +2,17 @@ package com.fatahapps.data.repository
 
 import com.fatahapps.data.local.QuestionDao
 import com.fatahapps.data.mapper.toDomain
+import com.fatahapps.data.mapper.toDto
 import com.fatahapps.data.mapper.toLocal
 import com.fatahapps.data.remote.PulaApi
 import com.fatahapps.domain.entities.Resource
+import com.fatahapps.domain.entities.answer.AnswerEntity
 import com.fatahapps.domain.entities.survey.QuestionEntity
 import com.fatahapps.domain.repository.PulaRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
+import retrofit2.Retrofit
 import java.io.IOException
 import javax.inject.Inject
 
@@ -50,5 +53,24 @@ class PulaRepositoryImpl @Inject constructor(
         }
 
         emit(Resource.Success(finalQuestionsDao))
+    }
+
+    override fun postAnswers(answerEntity: AnswerEntity):Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            api.postAnswer(
+                answerEntity.toDto()
+            )
+            emit(Resource.Success("Message"))
+        } catch (e: HttpException){
+            emit(Resource.Error(
+                message = e.message.toString()
+            ))
+        } catch (e: IOException) {
+            emit(Resource.Error(
+                message = e.message.toString()
+            ))
+        }
     }
 }
