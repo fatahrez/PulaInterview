@@ -16,6 +16,6 @@ interface AnswerDao {
     suspend fun deleteAnswer()
 
     @Query("SELECT * FROM answerlocal LIMIT 1")
-    suspend fun getAnswer(): List<AnswerLocal>
+    suspend fun getAnswer(): AnswerLocal
 
 }

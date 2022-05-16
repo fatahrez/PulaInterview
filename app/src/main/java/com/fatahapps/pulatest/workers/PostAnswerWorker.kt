@@ -26,9 +26,7 @@ class PostAnswerWorker @AssistedInject constructor(
         withContext(Dispatchers.IO) {
             Log.i("TAG", "doWork: ${answerDao.getAnswer()}")
             postAnswersUseCase(
-                answerDao.getAnswer().map{
-                    it.toDomain()
-                }[0]
+                answerDao.getAnswer().toDomain()
             ).catch { e ->
                 Log.e("TAG", "doWork: ${answerDao.getAnswer()}", )
                 Log.e("TAG", "postAnswer: ", e)

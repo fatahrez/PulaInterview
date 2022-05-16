@@ -1,5 +1,6 @@
 package com.fatahapps.data.repository
 
+import android.util.Log
 import com.fatahapps.data.local.AnswerDao
 import com.fatahapps.data.local.QuestionDao
 import com.fatahapps.data.mapper.toDomain
@@ -63,6 +64,7 @@ class PulaRepositoryImpl @Inject constructor(
             api.postAnswer(
                 answerEntity.toDto()
             )
+            answerDao.deleteAnswer()
             answerDao.insertAnswer(answerEntity.toLocal())
             emit(Resource.Success("Message"))
         } catch (e: HttpException){

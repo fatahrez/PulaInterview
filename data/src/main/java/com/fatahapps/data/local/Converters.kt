@@ -30,7 +30,7 @@ class Converters(
     fun fomStringsJson(json: String): List<String>? {
         return jsonParser.fromJson<ArrayList<String>>(
             json,
-            object : TypeToken<ArrayList<List<String>>>(){}.type
+            object : TypeToken<ArrayList<String>>(){}.type
         )
     }
 
