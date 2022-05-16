@@ -24,12 +24,13 @@ class PostAnswerWorker @AssistedInject constructor(
 ): CoroutineWorker(appContext, workerParams) {
     override suspend  fun doWork(): Result {
         withContext(Dispatchers.IO) {
-            Log.i("TAG", "doWork: ${answerDao.getAnswer()}")
+            Log.i("TAG", "doWork: ${answerDao.getAnswer().last()}")
             postAnswersUseCase(
-                answerDao.getAnswer().toDomain()
+                answerDao.getAnswer().map {
+                    it.toDomain()
+                }.last()
             ).catch { e ->
-                Log.e("TAG", "doWork: ${answerDao.getAnswer()}", )
-                Log.e("TAG", "postAnswer: ", e)
+ q                  Log.e("TAG", "postAnswer: ", e)
             }.collect{
 
             }

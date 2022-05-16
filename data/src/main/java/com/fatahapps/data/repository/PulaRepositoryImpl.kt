@@ -64,7 +64,6 @@ class PulaRepositoryImpl @Inject constructor(
             api.postAnswer(
                 answerEntity.toDto()
             )
-            answerDao.deleteAnswer()
             answerDao.insertAnswer(answerEntity.toLocal())
             emit(Resource.Success("Message"))
         } catch (e: HttpException){
