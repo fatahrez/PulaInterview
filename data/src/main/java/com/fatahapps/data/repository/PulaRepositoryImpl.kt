@@ -29,7 +29,6 @@ class PulaRepositoryImpl @Inject constructor(
 
         try {
             val remoteData = api.getQuestions()
-            dao.deleteQuestions()
             dao.insertQuestions(remoteData.questions.map {
                 it.toLocal()
             })
@@ -64,7 +63,6 @@ class PulaRepositoryImpl @Inject constructor(
             api.postAnswer(
                 answerEntity.toDto()
             )
-            answerDao.deleteAnswer()
             answerDao.insertAnswer(answerEntity.toLocal())
             emit(Resource.Success("Message"))
         } catch (e: HttpException){

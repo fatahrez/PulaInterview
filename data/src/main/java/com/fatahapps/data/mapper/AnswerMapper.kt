@@ -16,3 +16,9 @@ fun AnswerEntity.toLocal(): AnswerLocal =
         bitmap,
         answerList
     )
+
+fun AnswerLocal.toDomain(): AnswerEntity =
+    AnswerEntity(
+        bitmap,
+        answerList
+    )
