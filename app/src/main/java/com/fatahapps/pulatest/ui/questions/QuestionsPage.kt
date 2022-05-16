@@ -187,7 +187,7 @@ fun QuestionScreenSection(
 //                }
             } else {
                 activity.openCamera()
-                val answer = Answer("ddf", listOf(stringAns.value, optionAns.value, floatAns.value))
+                val answer = Answer(activity.imageBitmap.toString(), listOf(stringAns.value, optionAns.value, floatAns.value))
                 viewModel._answer.value = answer
                 viewModel.onEvent(QuestionEvent.NavigateToAfterQuestion)
             }
@@ -196,25 +196,5 @@ fun QuestionScreenSection(
                 text = viewModel.buttonText.value
             )
         }
-    }
-}
-
-@Composable
-fun <T: Any> rememberMutableStateListOf(vararg elements: T): SnapshotStateList<T> {
-    return rememberSaveable(
-        saver = listSaver(
-            save = { stateList ->
-                if (stateList.isNotEmpty()) {
-                    val first = stateList.first()
-                    if (!canBeSaved(first)) {
-                        throw IllegalStateException("${first::class} cannot be saved. By default only types which can be stored in the Bundle class can be saved.")
-                    }
-                }
-                stateList.toList()
-            },
-            restore = { it.toMutableStateList() }
-        )
-    ) {
-        elements.toList().toMutableStateList()
     }
 }

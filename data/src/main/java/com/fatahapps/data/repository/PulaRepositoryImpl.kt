@@ -1,5 +1,6 @@
 package com.fatahapps.data.repository
 
+import com.fatahapps.data.local.AnswerDao
 import com.fatahapps.data.local.QuestionDao
 import com.fatahapps.data.mapper.toDomain
 import com.fatahapps.data.mapper.toDto
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 class PulaRepositoryImpl @Inject constructor(
     private val api: PulaApi,
-    private val dao: QuestionDao
+    private val dao: QuestionDao,
+    private val answerDao: AnswerDao
 ): PulaRepository {
     override fun getQuestions(): Flow<Resource<List<QuestionEntity>>> = flow {
         emit(Resource.Loading())
@@ -62,6 +64,8 @@ class PulaRepositoryImpl @Inject constructor(
             api.postAnswer(
                 answerEntity.toDto()
             )
+            answerDao.deleteAnswer()
+            answerDao.insertAnswer(answerEntity.toLocal())
             emit(Resource.Success("Message"))
         } catch (e: HttpException){
             emit(Resource.Error(

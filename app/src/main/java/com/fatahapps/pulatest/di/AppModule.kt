@@ -90,4 +90,9 @@ class AppModule {
         pulaDatabase: PulaDatabase
     ) = pulaDatabase.engStringsDao
 
+    @Provides
+    @Singleton
+    fun providesAnswerDao(
+        pulaDatabase: PulaDatabase
+    ) = pulaDatabase.answerDao
 }

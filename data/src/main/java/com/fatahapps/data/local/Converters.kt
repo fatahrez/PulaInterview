@@ -25,4 +25,20 @@ class Converters(
             object : TypeToken<ArrayList<OptionLocal>>(){}.type
         ) ?: "[]"
     }
+
+    @TypeConverter
+    fun fomStringsJson(json: String): List<String>? {
+        return jsonParser.fromJson<ArrayList<String>>(
+            json,
+            object : TypeToken<ArrayList<List<String>>>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun toStringsJson(strings: List<String>): String {
+        return jsonParser.toJson(
+            strings,
+            object : TypeToken<ArrayList<String>>(){}.type
+        ) ?: "[]"
+    }
 }
