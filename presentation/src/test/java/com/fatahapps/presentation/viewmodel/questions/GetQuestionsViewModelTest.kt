@@ -6,7 +6,9 @@ import com.fatahapps.domain.repository.PulaRepository
 import com.fatahapps.domain.usecases.GetQuestionsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
@@ -18,15 +20,14 @@ class GetQuestionsViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = GetQuestionsViewModel(GetQuestionsUseCase(repository))
+//        viewModel = GetQuestionsViewModel(GetQuestionsUseCase(repository))
     }
 
     @Test
-    fun `test get questions returns questions`() {
+    fun `test get questions returns questions`() = runBlocking {
         coEvery { repository.getQuestions() } returns
                 flowOf(Resource.Success(listOf(question, question, question)))
-        viewModel.showQuestions()
-        assert(viewModel.state.value.questions.size == 3)
+        assert(viewModel.questionList.value.size == 3)
     }
 
 }

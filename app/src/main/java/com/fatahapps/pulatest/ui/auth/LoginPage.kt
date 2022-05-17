@@ -7,28 +7,40 @@ import android.util.Log
 import android.view.GestureDetector
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.preference.PreferenceManager
+import coil.compose.rememberImagePainter
 import com.fatahapps.pulatest.ApplicationPrefs
 import com.fatahapps.pulatest.MainActivity
 import com.fatahapps.pulatest.destinations.QuestionsPageDestination
+import com.fatahapps.pulatest.ui.theme.ColorButton
+import com.fatahapps.pulatest.ui.theme.latoFonts
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -49,6 +61,35 @@ fun LoginPage(
         prefManager = ApplicationPrefs()
         Log.i("TAG", "FirstTime: ${PreferenceManager.getDefaultSharedPreferences(context).getBoolean("wasAppStartedPreviously", false)}")
 
+        val configuration = LocalConfiguration.current
+
+        val width = configuration.screenWidthDp.dp
+        val height = configuration.screenHeightDp.dp
+
+        Image(
+            painter = rememberImagePainter(
+                data = "https://img.freepik.com/free-vector/happy-freelancer-with-computer-home-young-man-sitting-armchair-using-laptop-chatting-online-smiling-vector-illustration-distance-work-online-learning-freelance_74855-8401.jpg?t=st=1652717451~exp=1652718051~hmac=96a2f4e58b431acbd6b66de73a568a2e4fdd7c24779f065b8bca62295eb4fd70&w=2000"
+            ),
+            contentDescription = "Login page image",
+            modifier = Modifier
+                .width(width / 1.3f)
+                .height(height / 3)
+                .align(CenterHorizontally),
+            contentScale = ContentScale.Crop
+        )
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Text(
+            text = "Login",
+            style = TextStyle(
+                fontFamily = latoFonts,
+                fontWeight = FontWeight.Bold,
+                fontSize = 32.sp
+            ),
+            modifier = Modifier.padding(16.dp)
+        )
+        
         var phone by remember { mutableStateOf(TextFieldValue("")) }
         TextField(
             value = phone,
@@ -59,10 +100,15 @@ fun LoginPage(
             singleLine = true,
             placeholder = { Text("Phone Number") },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
-            trailingIcon = {
+            leadingIcon = {
                 Icon(imageVector = Icons.Filled.Phone, contentDescription = "phoneIcon")
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent
+            )
         )
         Spacer(modifier = Modifier.size(20.dp))
         var password by rememberSaveable { mutableStateOf("") }
@@ -74,6 +120,9 @@ fun LoginPage(
                 password = it
             },
             label = { Text("Password") },
+            leadingIcon = {
+                  Icon(imageVector = Icons.Filled.LockOpen, "Lock icon")
+            },
             singleLine = true,
             placeholder = { Text("Password") },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -90,9 +139,15 @@ fun LoginPage(
                     Icon(imageVector  = image, description)
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            )
         )
-
+        Spacer(modifier = Modifier.size(16.dp))
         Button(
             onClick = {
                 if (phone.text.isEmpty()) {
@@ -117,7 +172,14 @@ fun LoginPage(
                         .show()
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = ColorButton,
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(30)
         ) {
             Text(text = "Login")
         }
