@@ -26,8 +26,7 @@ This app is for Pula (https://www.pula-advisors.com/) Android position. It's a S
 - The app sends a background service request every 15 minutes
 
 ## Screenshots
-
-
+<img src="https://raw.githubusercontent.com/fatahrez/PulaInterview/master/screenshots/Screenshot_20220517_115926.png" width="300"/>.<img src="" width="300"/>.<img src="https://raw.githubusercontent.com/fatahrez/PulaInterview/master/screenshots/Screenshot_20220517_115956.png" width="300"/>.<img src="https://raw.githubusercontent.com/fatahrez/PulaInterview/master/screenshots/Screenshot_20220517_120030.png" width="300"/>.<img src="https://raw.githubusercontent.com/fatahrez/PulaInterview/master/screenshots/Screenshot_20220517_120038.png" width="300"/>.<img src="https://raw.githubusercontent.com/fatahrez/PulaInterview/master/screenshots/Screenshot_20220517_120206.png" width="300"/>.<img src="https://raw.githubusercontent.com/fatahrez/PulaInterview/master/screenshots/Screenshot_20220517_120050.png" width="300"/>
 
 ## Approach ##
 ### Architecture
