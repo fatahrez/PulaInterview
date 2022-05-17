@@ -43,7 +43,8 @@ class MainActivity : ComponentActivity() {
     private var photo: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        imageBitmap = createBitmap(1000,1000)
+
+        imageBitmap = createBitmap(100, 100)
 
         setContent {
             PulaTestTheme {
@@ -105,9 +106,11 @@ class MainActivity : ComponentActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Log.i("TAG", "onActivityResult: ${data?.extras?.get("data")}")
+            Log.i("TAG", "onActivityResult: $data")
+            if (data != null) {
+                photo = data.data.toString()
+            }
             imageBitmap = data?.extras?.get("data") as Bitmap
-            photo = data.data.toString()
             Log.i("TAG", "onActivityResult: $imageBitmap")
         }
     }

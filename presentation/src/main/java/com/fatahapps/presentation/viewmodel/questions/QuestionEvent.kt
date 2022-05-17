@@ -7,5 +7,6 @@ sealed class QuestionEvent {
     object NextQuestion: QuestionEvent()
     object GetQuestions: QuestionEvent()
     object GetEngStrings: QuestionEvent()
+    object GetPhoto: QuestionEvent()
     object NavigateToAfterQuestion: QuestionEvent()
 }

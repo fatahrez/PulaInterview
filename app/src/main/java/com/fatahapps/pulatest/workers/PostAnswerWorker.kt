@@ -30,7 +30,7 @@ class PostAnswerWorker @AssistedInject constructor(
                     it.toDomain()
                 }.last()
             ).catch { e ->
- q                  Log.e("TAG", "postAnswer: ", e)
+                Log.e("TAG", "postAnswer: ", e)
             }.collect{
 
             }

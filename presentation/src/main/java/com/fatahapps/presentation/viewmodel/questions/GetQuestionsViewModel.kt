@@ -1,8 +1,12 @@
 package com.fatahapps.presentation.viewmodel.questions
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fatahapps.domain.entities.Resource
@@ -51,6 +55,15 @@ class GetQuestionsViewModel @Inject constructor(
 
     private val _isNext = mutableStateOf(false)
     val isNext: State<Boolean> = _isNext
+
+    private val _imageUrl = mutableStateOf(value = "")
+    val image: State<String> = _imageUrl
+
+    private val _imageBitmap = mutableStateOf<Bitmap>(
+        value = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+    )
+    val imageBitmap: State<Bitmap> =_imageBitmap
+
 
     var currentQuestion = 0
 
@@ -150,6 +163,7 @@ class GetQuestionsViewModel @Inject constructor(
                 )
                 if (currentQuestion == questionList.value.size - 1) {
                     _buttonText.value = "Submit"
+                    onEvent(QuestionEvent.GetPhoto)
                 }
             }
             is QuestionEvent.NextQuestion -> {
@@ -157,6 +171,13 @@ class GetQuestionsViewModel @Inject constructor(
                     _isNext.value = true
                     delay(200)
                     _isNext.value = false
+                }
+            }
+            is QuestionEvent.GetPhoto -> {
+                viewModelScope.launch {
+                    _eventFlow.emit(
+                        UIEvent.ShowCamera("ShowCamera")
+                    )
                 }
             }
             is QuestionEvent.NavigateToAfterQuestion -> {
@@ -181,5 +202,6 @@ class GetQuestionsViewModel @Inject constructor(
 
     sealed class UIEvent {
         data class ShowSnackbar(val message: String): UIEvent()
+        data class ShowCamera(val message: String): UIEvent()
     }
 }
