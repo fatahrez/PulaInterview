@@ -72,9 +72,51 @@ This App uses Clean Architecture to ensure:
 - Helps UI layer to be driven from data layer
 
 
-### states
+#### states
 
 - The app uses states in ViewModel to queue different Events
 - The states send UI events from ViewModel to UI
 - Handles loading of the app and knows when there's an error
 - Sealed classes flow freely in States
+
+## How to Setup
+
+Clone this repo
+
+    $ git clone git@github.com:fatahrez/Pixar.git
+
+or HTTPS
+
+    $ git clone https://github.com/fatahrez/Pixar.git
+
+Open the project with Android Studio and build using gradle. Feel free to run the App on your phone.
+
+
+**Login**
+
+Phone Number: Any phone number starting +2547....
+password: 1234GYD%$
+
+## Libraries used
+
+- **Retrofit** - Android Network Client, Used to consume API from Pixabay API
+- **Room** - SQLite ORM - used to save data to the phone's database for caching
+- **Hilt Dagger** - Used for dependency Injection
+- **Coroutines** - Used to execute code asynchronously
+- **Jetpack Compose** - Used to write the declarative UI of the App
+- **Material Design** - Give the App a theme and generally improve UI of the App
+- **Coil Image** - Image Loading library
+- **Lifecycle library** - Majorly to define the ViewModels of the app
+- **Compose nDestination** - To navigate to different screens of the App
+- **WorkManager** - Background periodic tasks
+- **OkHttpLogging Interceptor** - Logging network requests
+- **Mockk** - Mocking for testing
+
+# Author Info
+
+Twitter - [@TheBandanaDev](https://twitter.com/TheBandanaDev)
+
+LinkedIn - [Abdulfatah](https://www.linkedin.com/in/abdulfatah-mohamed-83709a177/)
+
+
+[Back To The Top](#PulaInterview)
