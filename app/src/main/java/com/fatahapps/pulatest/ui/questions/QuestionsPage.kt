@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +39,7 @@ import com.fatahapps.pulatest.destinations.OnboardingPageDestination
 import com.fatahapps.pulatest.ui.camera.CameraPage
 import com.fatahapps.pulatest.ui.theme.BackgroundGreen
 import com.fatahapps.pulatest.ui.theme.ColorButton
+import com.fatahapps.pulatest.ui.theme.PulaTestTheme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.coroutineScope

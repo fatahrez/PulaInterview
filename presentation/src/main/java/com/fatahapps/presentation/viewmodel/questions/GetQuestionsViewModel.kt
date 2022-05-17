@@ -162,7 +162,7 @@ class GetQuestionsViewModel @Inject constructor(
                     progress
                 )
                 if (currentQuestion == questionList.value.size - 1) {
-                    _buttonText.value = "Submit"
+                    _buttonText.value = "Finish"
                     onEvent(QuestionEvent.GetPhoto)
                 }
             }
