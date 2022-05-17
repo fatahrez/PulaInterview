@@ -247,7 +247,6 @@ fun QuestionScreenSection(
                 val answer = Answer(activity.getPhotoPath(), listOf(stringAns.value, optionAns.value, floatAns.value))
                 viewModel._answer.value = answer
                 viewModel.onEvent(QuestionEvent.NavigateToAfterQuestion)
-//                Toast.makeText(co, , Toast.LENGTH_SHORT).show()
                 navigator.navigate(OnboardingPageDestination)
             }
         },
