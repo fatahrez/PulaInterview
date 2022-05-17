@@ -11,8 +11,8 @@ This app is for Pula (https://www.pula-advisors.com/) Android position. It's a S
 ## Table of Contents
 
 - [Functionalities](#functionalities)
-- [Approach](#approach)
 - [Screenshots](#screenshots)
+- [Approach](#approach)
 - [How To Setup](#how-to-setup)
 - [Libraries Used](#libraries-used)
 - [Author Info](#author-info)
@@ -24,6 +24,10 @@ This app is for Pula (https://www.pula-advisors.com/) Android position. It's a S
 - A user can answer Questions
 - A user can can send his/her photo
 - The app sends a background service request every 15 minutes
+
+## Screenshots
+
+
 
 ## Approach ##
 ### Architecture
@@ -75,5 +79,3 @@ This App uses Clean Architecture to ensure:
 - The states send UI events from ViewModel to UI
 - Handles loading of the app and knows when there's an error
 - Sealed classes flow freely in States
-
-## Screenshots
