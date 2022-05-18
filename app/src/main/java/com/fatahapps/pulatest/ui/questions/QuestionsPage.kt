@@ -1,32 +1,23 @@
 package com.fatahapps.pulatest
 
 
-import android.app.Activity
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.listSaver
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,18 +25,13 @@ import coil.compose.rememberImagePainter
 import com.fatahapps.presentation.model.answer.Answer
 import com.fatahapps.presentation.viewmodel.questions.GetQuestionsViewModel
 import com.fatahapps.presentation.viewmodel.questions.QuestionEvent
-import com.fatahapps.pulatest.destinations.CameraPageDestination
 import com.fatahapps.pulatest.destinations.OnboardingPageDestination
-import com.fatahapps.pulatest.ui.camera.CameraPage
+import com.fatahapps.pulatest.destinations.SuccessScreenDestination
 import com.fatahapps.pulatest.ui.theme.BackgroundGreen
 import com.fatahapps.pulatest.ui.theme.ColorButton
-import com.fatahapps.pulatest.ui.theme.PulaTestTheme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @Destination
 @Composable
@@ -249,7 +235,7 @@ fun QuestionScreenSection(
                 val answer = Answer(activity.getPhotoPath(), listOf(stringAns.value, optionAns.value, floatAns.value))
                 viewModel._answer.value = answer
                 viewModel.onEvent(QuestionEvent.NavigateToAfterQuestion)
-                navigator.navigate(OnboardingPageDestination)
+                navigator.navigate(SuccessScreenDestination)
             }
         },
         modifier = Modifier
