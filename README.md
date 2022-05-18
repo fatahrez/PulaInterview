@@ -83,11 +83,11 @@ This App uses Clean Architecture to ensure:
 
 Clone this repo
 
-    $ git clone git@github.com:fatahrez/Pixar.git
+    $ git clone git@github.com:fatahrez/PulaInterview.git
 
 or HTTPS
 
-    $ git clone https://github.com/fatahrez/Pixar.git
+    $ git clone https://github.com/fatahrez/PulaInterview.git
 
 Open the project with Android Studio and build using gradle. Feel free to run the App on your phone.
 
