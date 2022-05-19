@@ -2,6 +2,7 @@ package com.fatahapps.pulatest
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -26,7 +27,6 @@ import com.fatahapps.presentation.model.answer.Answer
 import com.fatahapps.presentation.viewmodel.questions.GetQuestionsViewModel
 import com.fatahapps.presentation.viewmodel.questions.QuestionEvent
 import com.fatahapps.pulatest.destinations.OnboardingPageDestination
-import com.fatahapps.pulatest.destinations.SuccessScreenDestination
 import com.fatahapps.pulatest.ui.theme.BackgroundGreen
 import com.fatahapps.pulatest.ui.theme.ColorButton
 import com.ramcosta.composedestinations.annotation.Destination
@@ -92,6 +92,7 @@ fun QuestionScreenSection(
     activity: MainActivity,
     navigator: DestinationsNavigator
 ) {
+    val context = LocalContext.current
     val stringAns = remember {
         mutableStateOf("")
     }
@@ -235,7 +236,8 @@ fun QuestionScreenSection(
                 val answer = Answer(activity.getPhotoPath(), listOf(stringAns.value, optionAns.value, floatAns.value))
                 viewModel._answer.value = answer
                 viewModel.onEvent(QuestionEvent.NavigateToAfterQuestion)
-                navigator.navigate(SuccessScreenDestination)
+                Toast.makeText(context, "Data posted successfully", Toast.LENGTH_SHORT).show()
+                navigator.navigate(OnboardingPageDestination)
             }
         },
         modifier = Modifier

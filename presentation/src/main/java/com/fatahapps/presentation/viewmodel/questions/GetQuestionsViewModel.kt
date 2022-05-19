@@ -184,8 +184,17 @@ class GetQuestionsViewModel @Inject constructor(
                 viewModelScope.launch {
                     postAnswersUseCase(answer.value.toDomain()).catch { e ->
                         Log.e("TAG", "postAnswer: ", e)
+                        _eventFlow.emit(
+                            UIEvent.ShowSnackbar(
+                                "Data posted successfully"
+                            )
+                        )
                     }.collect{
-
+                        _eventFlow.emit(
+                            UIEvent.ShowSnackbar(
+                                it.message.toString()
+                            )
+                        )
                     }
                 }
             }
